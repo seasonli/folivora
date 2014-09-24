@@ -83,8 +83,8 @@
     });
  */
 
-var tween = require('util/tween.js'),
-  safeCall = require('util/safeCall.js');
+var tween = require('./tween.js'),
+  safeCall = require('./safeCall.js');
 
 
 // 初始化 raf、caf.
