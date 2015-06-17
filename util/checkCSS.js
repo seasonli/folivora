@@ -13,7 +13,7 @@
  *   2) 如果用户当前浏览器不支持此 CSS 属性，则方法返回空字符串，据此可用于检测某 CSS 属性的受支持情况
  *
  * @example    // 典型的调用示例
-    var checkCSS = require('util/checkCSS.js');
+    var checkCSS = require('util/checkCSS');
 
     checkCSS('background-image');    // 各浏览器下返回 'background-image' 或 'backgroundImage'
     checkCSS('backgroundImage');     // 各浏览器下返回 'background-image' 或 'backgroundImage'

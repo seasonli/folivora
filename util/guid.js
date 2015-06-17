@@ -24,14 +24,14 @@
  *      因此，在需要生成大量 GUID 时，请根据需要增加生成长度，以尽可能避免出现重复
  *
  * @example    // 典型的调用示例
-    var guid = require('wiki-common:widget/util/guid.js');
+    var guid = require('util/guid');
 
     guid();      // '6bed4d0'
     guid(32);    // '87221c39799b311fc97ec4e5d608c90d'
  */
 
-var sparkMD5 = require('../lib/sparkMD5/sparkMD5.js'),
-  cookie = require('./cookie.js');
+var sparkMD5 = require('../lib/sparkMD5/sparkMD5'),
+  cookie = require('./cookie');
 
 
 module.exports = function (len) {
