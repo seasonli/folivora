@@ -75,7 +75,7 @@
  *      格式化模式串中如缺失某度量单位的表示，则该度量单位下的时间分量值自动向下一级可用度量单位累计(请参阅示例)；如下级度量单位缺失，不向上级度量单位累计
  *      当指定的起始时间晚于结束时间时，输出带有负号('-')的格式化串
  *      如果忽略参数 formatPattern，则默认使用'd天h小时m分s秒f毫秒'模式串格式化，并且输出结果中将不包含值为0的计量部分，请参阅调用示例
- *     
+ *
  *      span() 方法 formatPattern 参数说明：
  *       d(n+) : 天分量，以前缀0补足余位，如'10'、'0010'
  *           h : 小时分量(24时制)，如'1'、'30'
@@ -94,9 +94,9 @@
  *      format(null, 'Year: yyyy, \\Mont\\h: M, Date: d');    // 'Year: 2014, Month: 7, Date: 12'
  *   7) span()、diff() 方法中的参数 keepZero 为 true 时，输出结果将保留数值为 0 的时间单元，否则将之移除(请参阅示例)
  *   8) span()、diff() 方法中的参数 onlyTop 为 true 时，输出结果仅保留最高单位时间单元，移除低级时间单元(请参阅示例)
- *      
+ *
  * @example    // 典型的调用示例
-     var timeFormater = require('util/timeFormater.js');
+     var timeFormater = require('util/timeFormater');
 
      // 构造时间
      timeFormater.build('2013-10-17 20:30:40.0');    // 构造时间(2013-10-17 20:30:40.0)
@@ -147,7 +147,7 @@
      timeFormater.startEnd('2013-10-23 17:30:0', '2013-10-23 20:00', null, null, null, null, true);    // '2013/10/23 09:30:00-2013/10/23 12:00:00'(使用 UTC 时间)
  */
 
-var numExtend = require('./number.js'),
+var numExtend = require('./number'),
   numPad = numExtend.pad, // 引入数字格式化方法(增补前缀 0)
   numToCN = numExtend.toCN; // 引入数字转中文方法
 
