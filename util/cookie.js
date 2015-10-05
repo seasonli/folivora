@@ -20,7 +20,6 @@
  *   @return no             // 返回：无
  */
 
-
 var cookie = {};
 
 cookie._isValidKey = function (key) {
