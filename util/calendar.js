@@ -80,8 +80,8 @@
     canlendar.addYears(-2);                      // {curYear: 2010, curMonth: 2, curDate: 28, calendarDays: Array[42], curMonthDaysCount: 28…}
  */
 
-var timeFormater = require('wiki-common:widget/util/timeFormater.js'),
-  safeCall = require('wiki-common:widget/util/safeCall.js');
+var timeFormater = require('./timeFormater.js'),
+  safeCall = require('./safeCall.js');
 
 // 构造日历数据
 function buildCalendar() {
