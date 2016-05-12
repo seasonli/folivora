@@ -33,8 +33,8 @@
  *   2) animation() 初始化方法采用“单参数完整配置”的版本可以配置全部受支持的参数；
  *      此外还有一个采用“多参数便捷配置”的重载版本，仅保留了最常用参数
  *   3) 所有参数其实都有默认值，但考虑到初始化一个没有任何操作的空 animation 没有任何意义，因而当不传任何参数初始化时，会抛出异常
- *   4) 动画缓动类型 easing 采用 wiki-common:widget/util/tween.js 中定义的缓动类型，使用时传入缓动函数名称即可(参阅示例)；
- *      如果想要使用自定义缓动算法，请直接传入缓动算法函数，接口定义请参阅上述 tween.js 中的缓动算法函数
+ *   4) 动画缓动类型 easing 采用 util/tween 中定义的缓动类型，使用时传入缓动函数名称即可(参阅示例)；
+ *      如果想要使用自定义缓动算法，请直接传入缓动算法函数，接口定义请参阅上述 tween 中的缓动算法函数
  *   5) 动画可以延迟执行(通过参数 delay 配置)，相应的 onStart() 回调只有在动画真正开始执行时才会触发；
  *      动画一旦初始化完成即进入计时流程，根据参数 delay 的配置，动画会立即或延迟执行
  *   6) onStart()、onStep()、onComplete() 三个回调在触发时，传入参数 progress {Number}，取值 [0, 1](双闭区间)，表示动画执行进度
@@ -49,7 +49,7 @@
  *      需要查询动画执行状态时，请务必(MUST)使用此属性，而不要(MUST NOT)通过“动画操作句柄”上的其他属性来判断
  *
  * @example    // 典型的调用示例
-    var animation = require('util/animation.js');
+    var animation = require('util/animation');
 
     var ani = animation({
       duration: 2000,                        // 执行时长 3s
@@ -84,140 +84,140 @@
  */
 
 var tween = require('./tween'),
-    safeCall = require('./safeCall');
+  safeCall = require('./safeCall');
 
 
 // 初始化 raf、caf.
 var browserPrefix = ['webkit', 'moz'],
-    screenRefreshInterval = 1000 / 60,
-    initialTimeStamp = +new Date(),
-    isDomHighResTimeStampSupported = window.performance && typeof window.performance.now === 'function',
-    ani = {};
+  screenRefreshInterval = 1000 / 60,
+  initialTimeStamp = +new Date(),
+  isDomHighResTimeStampSupported = window.performance && typeof window.performance.now === 'function',
+  ani = {};
 
 ani.raf = window.requestAnimationFrame;
 ani.caf = window.cancelAnimationFrame;
 
 if (!ani.raf) {
-    for (var i = 0; i < browserPrefix.length; ++i) {
-        ani.raf = window[browserPrefix + 'RequestAnimationFrame'];
-        ani.caf = window[browserPrefix + 'CancelAnimationFrame'] || window[browserPrefix + 'CancelRequestAnimationFrame'];
+  for (var i = 0; i < browserPrefix.length; ++i) {
+    ani.raf = window[browserPrefix + 'RequestAnimationFrame'];
+    ani.caf = window[browserPrefix + 'CancelAnimationFrame'] || window[browserPrefix + 'CancelRequestAnimationFrame'];
 
-        if (ani.raf) {
-            break;
-        }
+    if (ani.raf) {
+      break;
     }
+  }
 }
 
 if (!ani.raf || !isDomHighResTimeStampSupported) {
-    ani.raf = function (callback) {
-        return setTimeout(function () {
-            callback(isDomHighResTimeStampSupported ? window.performance.now() : (new Date() - initialTimeStamp));
-        }, screenRefreshInterval);
-    };
+  ani.raf = function (callback) {
+    return setTimeout(function () {
+      callback(isDomHighResTimeStampSupported ? window.performance.now() : (new Date() - initialTimeStamp));
+    }, screenRefreshInterval);
+  };
 }
 
 if (!ani.caf) {
-    ani.caf = function (handler) {
-        clearTimeout(handler);
-    }
+  ani.caf = function (handler) {
+    clearTimeout(handler);
+  }
 }
 
 // 动画类
 function Animation(args) {
-    if (arguments.length == 1 && typeof arguments[0] === 'object') {
-        this.duration = isNaN(parseInt(args.duration)) ? 400 : Math.abs(parseInt(args.duration));
-        this.delay = isNaN(parseInt(args.delay)) ? 0 : Math.abs(parseInt(args.delay));
-        this.easing = typeof args.easing === 'function' ? args.easing : (typeof tween[args.easing] === 'function' ? tween[args.easing] : tween.easeOutQuad);
-        this.onStart = typeof args.onStart === 'function' ? args.onStart : null;
-        this.onStep = typeof args.onStep === 'function' ? args.onStep : null;
-        this.onComplete = typeof args.onComplete === 'function' ? args.onComplete : null;
-    } else {
-        this.duration = isNaN(parseInt(arguments[0])) ? 400 : Math.abs(parseInt(arguments[0]));
-        this.delay = 0;
-        this.onStep = typeof arguments[1] === 'function' ? arguments[1] : null;
-        this.easing = arguments[2] && typeof arguments[2] === 'function' ? arguments[2] : (typeof tween[arguments[2]] === 'function' ? tween[arguments[2]] : tween.easeOutQuad);
-        this.onComplete = typeof arguments[3] === 'function' ? arguments[3] : null;
-    }
+  if (arguments.length == 1 && typeof arguments[0] === 'object') {
+    this.duration = isNaN(parseInt(args.duration)) ? 400 : Math.abs(parseInt(args.duration));
+    this.delay = isNaN(parseInt(args.delay)) ? 0 : Math.abs(parseInt(args.delay));
+    this.easing = typeof args.easing === 'function' ? args.easing : (typeof tween[args.easing] === 'function' ? tween[args.easing] : tween.easeOutQuad);
+    this.onStart = typeof args.onStart === 'function' ? args.onStart : null;
+    this.onStep = typeof args.onStep === 'function' ? args.onStep : null;
+    this.onComplete = typeof args.onComplete === 'function' ? args.onComplete : null;
+  } else {
+    this.duration = isNaN(parseInt(arguments[0])) ? 400 : Math.abs(parseInt(arguments[0]));
+    this.delay = 0;
+    this.onStep = typeof arguments[1] === 'function' ? arguments[1] : null;
+    this.easing = arguments[2] && typeof arguments[2] === 'function' ? arguments[2] : (typeof tween[arguments[2]] === 'function' ? tween[arguments[2]] : tween.easeOutQuad);
+    this.onComplete = typeof arguments[3] === 'function' ? arguments[3] : null;
+  }
 
-    this.elapsedTime = 0;
-    this.progress = 0;
-    this.curDuration = 0;
-    this.hasAniStarted = false;
-    this.aniState = 'STOP';
+  this.elapsedTime = 0;
+  this.progress = 0;
+  this.curDuration = 0;
+  this.hasAniStarted = false;
+  this.aniState = 'STOP';
 
-    this.resume();
+  this.resume();
 }
 
 Animation.prototype = {
-    constructor: Animation,
-    stop: function () {
-        if (this.aniState == 'PLAY') {
-            this.aniState = this.progress < 1 ? 'PAUSED' : 'STOP';
-            this.elapsedTime = this.curDuration;
+  constructor: Animation,
+  stop: function () {
+    if (this.aniState == 'PLAY') {
+      this.aniState = this.progress < 1 ? 'PAUSED' : 'STOP';
+      this.elapsedTime = this.curDuration;
 
-            ani.caf.call(window, this.aniRollId);
+      ani.caf.call(window, this.aniRollId);
 
-            return this.progress;
-        }
-    },
-    resume: function () {
-        if (this.aniState != 'PLAY') {
-            var self = this;
-
-            this.aniState = 'PLAY';
-            this.startTick = isDomHighResTimeStampSupported ? window.performance.now() : (new Date() - initialTimeStamp);
-            this.elapsedTime > 0 && (this.delay = 0);
-
-            (this.aniRoll = function (tick) {
-                var _interval = tick - self.startTick;
-
-                if (_interval >= self.delay) {
-                    if (!self.hasAniStarted) {
-                        self.hasAniStarted = true;
-
-                        safeCall(self.onStart, 0, self);
-                        safeCall(self.onStep, 0, self);
-                    } else {
-                        self.curDuration = self.elapsedTime + _interval - self.delay;
-
-                        if (self.curDuration < self.duration) {
-                            self.progress = self.easing(null, self.curDuration, 0, 1, self.duration);
-                            safeCall(self.onStep, self.progress, self);
-                        }
-                    }
-                }
-
-                if (self.curDuration < self.duration) {
-                    self.aniRollId = ani.raf.call(window, self.aniRoll);
-                } else {
-                    if (self.progress < 1) {
-                        safeCall(self.onStep, 1, self);
-                    }
-
-                    self.elapsedTime = 0;
-                    self.curDuration = 0;
-                    self.hasAniStarted = false;
-                    self.progress = 0;
-                    self.aniState = 'STOP';
-
-                    safeCall(self.onComplete, 1, self);
-                }
-            })(this.startTick);
-        }
+      return this.progress;
     }
+  },
+  resume: function () {
+    if (this.aniState != 'PLAY') {
+      var self = this;
+
+      this.aniState = 'PLAY';
+      this.startTick = isDomHighResTimeStampSupported ? window.performance.now() : (new Date() - initialTimeStamp);
+      this.elapsedTime > 0 && (this.delay = 0);
+
+      (this.aniRoll = function (tick) {
+        var _interval = tick - self.startTick;
+
+        if (_interval >= self.delay) {
+          if (!self.hasAniStarted) {
+            self.hasAniStarted = true;
+
+            safeCall(self.onStart, 0, self);
+            safeCall(self.onStep, 0, self);
+          } else {
+            self.curDuration = self.elapsedTime + _interval - self.delay;
+
+            if (self.curDuration < self.duration) {
+              self.progress = self.easing(null, self.curDuration, 0, 1, self.duration);
+              safeCall(self.onStep, self.progress, self);
+            }
+          }
+        }
+
+        if (self.curDuration < self.duration) {
+          self.aniRollId = ani.raf.call(window, self.aniRoll);
+        } else {
+          if (self.progress < 1) {
+            safeCall(self.onStep, 1, self);
+          }
+
+          self.elapsedTime = 0;
+          self.curDuration = 0;
+          self.hasAniStarted = false;
+          self.progress = 0;
+          self.aniState = 'STOP';
+
+          safeCall(self.onComplete, 1, self);
+        }
+      })(this.startTick);
+    }
+  }
 };
 
 // 动画类代理
 function AnimationProxy() {
-    return Animation.apply(this, arguments[0]);
+  return Animation.apply(this, arguments[0]);
 }
 AnimationProxy.prototype = Animation.prototype;
 
 
 module.exports = function () {
-    if (arguments.length < 1) {
-        throw new Error('[Animation Exception]: No arguments.');
-    } else {
-        return new AnimationProxy(arguments);
-    }
+  if (arguments.length < 1) {
+    throw new Error('[Animation Exception]: No arguments.');
+  } else {
+    return new AnimationProxy(arguments);
+  }
 }
