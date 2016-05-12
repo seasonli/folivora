@@ -17,7 +17,7 @@
  *   3) safeCall() 特别适合用来调用经由“非必须”参数传入的方法(通常是回调)
  *
  * @example    // 典型的调用示例
-    var safeCall = require('util/safeCall.js');
+    var safeCall = require('util/safeCall');
 
     // 传入单个参数
     safeCall(function(name){

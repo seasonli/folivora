@@ -15,9 +15,9 @@
  *   @return {Object}                // 返回：日历对象
  *
  * @method getCanlendarData(curDate)        // 方法：基于“当前日期” curDate 获取当月日历数据(请参阅下文详述)
- *   @param curDate {Date|String|Number}    // 参数：“当前日期”(可选，默认值：今日 || 客户端当前日期），此串由 wiki-common:widget/util/timeFormater.js 中的 format()方法解析，请确保格式正确
+ *   @param curDate {Date|String|Number}    // 参数：“当前日期”(可选，默认值：今日 || 客户端当前日期），此串由 util/timeFormater 中的 format()方法解析，请确保格式正确
  *   @return {Object}                       // 返回：构造好的日历数据
- *   
+ *
  * @method addDays(dayCount)     // 方法：基于“当前日期”，增加/减少若干天数，获取新的“当月”日历数据(请参阅下文详述)
  *   @param dayCount {Number}    // 参数：增加的天数(需要减少时请传入负值，可选，默认值：1)
  *   @return {Object}            // 返回：构造好的日历数据
@@ -32,7 +32,7 @@
  *
  * @description    // 附加说明
  *   1) 本组件用于生成整月的日历标签数据，并不构造 DOM 结构，具体数据格式说明请参阅下文
- *   2) 校验参数输入的时间使用 wiki-common:widget/util/timeFormater.js 组件，需要时请参阅其说明
+ *   2) 校验参数输入的时间使用 util/timeFormater 组件，需要时请参阅其说明
  *   3) onDateCheck() 为检测日期可用性时的回调方法，用于用户自定义要禁用的日期；
  *      onDateCheck() 回调应该返回 true 或 false，当返回值 === false 时，对应的日期数据中的 isDisabled 字段将被置为 true；
  *      onDateCheck() 回调被调用时传入参数 date {Date}(代表本日日期的 Date 对象)
@@ -58,7 +58,7 @@
  *        isHoliday: {Boolean}     // 本日是否是双休日
  *        isToday: {Boolean}       // 本日是否是“今日”(构造函数中所配置的“今日”)
  *      }
- *      
+ *
  *      calendarDays 恒定包含 42 天(即6周)的日期数据，这意味着这些数据中除了当前月的日期外，首尾还分别包含一部分上一月及下一月的日期；
  *      包含哪些非当前月日期，会受到初始化构造参数 firstDayOfWeek 的影响；
  *      curMonthDaysIndex 指示了当前月的日期在 calendarDays 数组中的首尾索引值，是一个闭区间；
@@ -69,7 +69,7 @@
  *   6) 想获取当前日期的日期对象，请直接使用 this.curDate.
  *
  * @example    // 典型的调用示例
-    var Calendar = require('util/calendar.js'),
+    var Calendar = require('util/calendar'),
       canlendar = new Calendar();
 
     canlendar.getCanlendarData();    // {curYear: 2014, curMonth: 7, curDate: 11, calendarDays: Array[42], curMonthDaysCount: 31…}
@@ -80,8 +80,8 @@
     canlendar.addYears(-2);                      // {curYear: 2010, curMonth: 2, curDate: 28, calendarDays: Array[42], curMonthDaysCount: 28…}
  */
 
-var timeFormater = require('./timeFormater.js'),
-  safeCall = require('./safeCall.js');
+var timeFormater = require('./timeFormater'),
+  safeCall = require('./safeCall');
 
 // 构造日历数据
 function buildCalendar() {
