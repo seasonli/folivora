@@ -78,7 +78,7 @@
  *      而非覆盖层 DOM 元素在其父容器中的层叠顺序(此层叠顺序可能会因用户操作而发生变化)。
  *
  * @example    // 典型的调用示例。
-    var Radar = require('wiki-common:widget/ui/radar/radar.js');
+    var Radar = require('ui/radar/radar');
 
     var radar = new Radar({
       chartSize: 150,
