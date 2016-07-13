@@ -39,7 +39,7 @@
  *      不匹配的浏览器类型字段值为 undefined (请参阅示例)
  *
  * @example    // 典型的调用示例
-    var browser = require('util/browser.js');
+    var browser = require('util/browser');
 
     browser.chrome();        // 39
     browser.firefox();       // undefined

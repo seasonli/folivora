@@ -10,11 +10,11 @@
  * @version 1.4 | 2014-10-20 | SeasonLi    // 修改 getSubStr() 字符截断策略，在最大限制长度小于等于后缀长度时，不添加后缀；
  *                                           // 修改 getSubStr() 方法默认后缀为实体符号 '&hellip;'；
  *                                           // 修改一处表述不够准确的注释
- *   
+ *
  * @method getByteLen(str)    // 方法：获取字符串字节长度(双字节字符计数 2)
  *   @param str {String}      // 参数：要计算长度的字符串(可选，默认为空)
  *   @return {Number}         // 返回：字符串字节长度
- *   
+ *
  * @method getSubStr(str, maxLen, suffix)    // 方法：将字符串在指定的字节长度内截断并补以指定后缀(请参阅下文详述)
  *   @param str {String}                     // 参数：要截断的字符串(可选，默认为空)
  *   @param maxLen {Number}                  // 参数：最大限制字节长度(可选，默认为原字符串长度，即不对传入的字符串进行截断)
@@ -52,7 +52,7 @@
  *      pad() 方法按照字符数计算要补充的前缀长度，即使前缀字符(串)包含多字节字符
  *
  * @example    // 典型的调用示例
-    var strExt = require('wiki-common:widget/util/string.js');
+    var strExt = require('util/string');
 
     var str = "AB中文C汉D字";
 
@@ -76,7 +76,7 @@
     strExt.pad('abc', 6, '@#');    // '@#@abc'
  */
 
-var timeFormater = require('./timeFormater.js');
+var timeFormater = require('./timeFormater');
 
 
 // 初始化输入，转为字符串，默认为空

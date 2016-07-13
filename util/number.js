@@ -10,7 +10,7 @@
  *   @param delimiter {String}           // 参数：分隔符(可选，默认值：',')
  *   @param len {Number}                 // 参数：切割长度(可选，默认值：3)
  *   @return {String}                    // 返回：格式化后的数值串
- *   
+ *
  * @method pad(num, len, char)     // 方法：使用指定填充符(串)给数值添加前缀，使其达到指定长度
  *   @param num {Number|String}    // 参数：待格式化的数值(必选，具体参阅下文详细说明)
  *   @param len {Number}           // 参数：长度(可选，默认值：0，即不对传入的数字添补前缀)
@@ -32,15 +32,15 @@
  *   4) toCN() 方法在启用大写模式(指定 useCap 参数为 true)时，按照中文货币常用数值表示方式输出
  *
  * @example    // 典型的调用示例
-    var numExt = require('util/number.js');
-    
+    var numExt = require('util/number');
+
     numExt.split(12345678);         // '12,345,678'
     numExt.split('-12345.6789');    // '-12,345.6789'
-    
+
     numExt.pad(123, 6);          // '000123'
     numExt.pad(123, 6, '_');     // '___123'
     numExt.pad(123, 6, '_#');    // '_#_123'
-    
+
     numExt.toCN(1024);                     // '一千零二十四'
     numExt.toCN(1024, true);               // '壹仟零贰拾肆'
     numExt.toCN('9007199254740991230');    // '九百亿七千一百九十九万二千五百四十七亿四千零九十九万一千二百三十'
